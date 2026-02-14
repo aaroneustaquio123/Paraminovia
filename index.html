@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Andrea ❤️</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #ffebf0;
+            overflow: hidden;
+        }
+
+        /* LADO IZQUIERDO: EL GRAN CORAZÓN */
+        .seccion-izquierda {
+            flex: 1.2; /* Un poco más ancho para el corazón */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* LADO DERECHO: TU FOTO */
+        .seccion-derecha {
+            flex: 0.8;
+            background-color: #333; /* Fondo oscuro por si la foto no carga */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 8px solid #ff0040;
+        }
+
+        .foto-pareja {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Esto hace que la foto ocupe todo el espacio sin deformarse */
+        }
+
+        /* DISEÑO DEL CORAZÓN GIGANTE */
+        .heart-container {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            background-color: #ff0040;
+            transform: rotate(-45deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            animation: heartbeat 1.2s infinite;
+        }
+
+        .heart-container::before,
+        .heart-container::after {
+            content: "";
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background-color: #ff0040;
+            border-radius: 50%;
+        }
+
+        .heart-container::before { top: -225px; left: 0; }
+        .heart-container::after { left: 225px; top: 0; }
+
+        @keyframes heartbeat {
+            0% { transform: rotate(-45deg) scale(1); }
+            15% { transform: rotate(-45deg) scale(1.08); }
+            30% { transform: rotate(-45deg) scale(1); }
+        }
+
+        .content {
+            transform: rotate(45deg);
+            z-index: 10;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        h1 { font-size: 60px; margin: 0; text-transform: uppercase; text-shadow: 3px 3px 10px rgba(0,0,0,0.3); }
+        p { font-size: 24px; margin: 20px 0; font-weight: bold; }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #btnSi { background-color: #2ecc71; color: white; }
+        #btnNo { background-color: white; color: #ff0040; position: relative; }
+
+        /* BANNER */
+        #banner {
+            position: absolute;
+            top: 30px;
+            background: white;
+            color: #ff0040;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="seccion-izquierda">
+        <div id="banner">¿Estás segura, Andrea? 🥺</div>
+        
+        <div class="heart-container">
+            <div class="content">
+                <h1>ANDREA</h1>
+                <p id="pregunta">¿Quieres ser mi San Valentín?</p>
+                <div class="botones">
+                    <button id="btnSi" onclick="aceptar()">¡SÍ!</button>
+                    <button id="btnNo" onmouseover="huir()" onclick="negar()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="seccion-derecha">
+        <img class="foto-pareja" src="Imagenes/miamor.jpeg" alt="Nuestra Foto">
+    </div>
+
+    <script>
+        let contador = 0;
+        const frases = [
+            "¿Estás segura?", "¿De verdad?", "¡Piénsalo bien!", "¡No me hagas esto!", 
+            "Me pondré triste...", "¡Mira el botón verde!", "Te daré muchos besos", 
+            "¡No te arrepientas!", "¡Ya casi no hay espacio!", "¡DIME QUE SÍ!"
+        ];
+
+        function negar() {
+            if (contador < 10) {
+                const banner = document.getElementById('banner');
+                const btnSi = document.getElementById('btnSi');
+                
+                banner.innerText = frases[contador];
+                banner.style.display = 'block';
+
+                // El botón SÍ crece exageradamente
+                let size = parseInt(window.getComputedStyle(btnSi).fontSize);
+                btnSi.style.fontSize = (size + 15) + "px";
+                btnSi.style.padding = (parseInt(btnSi.style.padding) + 5) + "px";
+                
+                contador++;
+            } else {
+                document.getElementById('btnNo').style.display = 'none';
+            }
+        }
+
+        function huir() {
+            if (contador >= 4) { // El botón escapa después de 4 intentos
+                const btnNo = document.getElementById('btnNo');
+                const x = Math.random() * (window.innerWidth / 2 - 150);
+                const y = Math.random() * (window.innerHeight - 100);
+                btnNo.style.position = 'fixed';
+                btnNo.style.left = x + 'px';
+                btnNo.style.top = y + 'px';
+            }
+        }
+
+        function aceptar() {
+            document.body.innerHTML = `
+                <div style="display:flex; width:100%; height:100vh; justify-content:center; align-items:center; background:#ffebf0; flex-direction:column; text-align:center;">
+                    <h1 style="font-size: 80px; color:#ff0040;">¡SABÍA QUE DIRÍAS QUE SÍ! ❤️</h1>
+                    <p style="font-size: 40px; color:#ff0040;">¡Eres la mejor, Andrea!</p>
+                    <div style="font-size: 120px;">🌹💖✨</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
